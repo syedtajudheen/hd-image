@@ -9,6 +9,7 @@ export default TRENDING_PHOTOS = (state = [], action) => {
        data: action.payload,
        page: action.page,
        photos: action.photos,
+       isFetched: true,
       }
     case types.FETCHING_REQUEST:
       return {

@@ -19,15 +19,15 @@ import unsplash from './src/unSplash';
 
 type Props = {};
 export default class App extends Component<Props> {
+  
   componentWillMount=()=>{
-    store.dispatch( FETCH_TRENDING_PHOTOS(1));
-    
     AsyncStorage.getItem('favourites')
     .then((data)=> {
-      console.log('async',JSON.parse(data))
+      store.dispatch(FETCH_TRENDING_PHOTOS(1,JSON.parse(data)));
       store.dispatch(favouriteItem(JSON.parse(data)))
     })
   }
+
   render() {
     return (
       <Provider store={store}>

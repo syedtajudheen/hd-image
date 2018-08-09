@@ -25,8 +25,7 @@ const TabNav = createMaterialTopTabNavigator(
   },
   {
     initialRouteName: "Trending",
-    removeClippedSubViews: false,
-    lazy: true,
+    removeClippedSubViews: true,
     tabBarOptions: {
       indicatorStyle: {
         backgroundColor: "#000"

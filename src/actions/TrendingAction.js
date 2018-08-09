@@ -28,23 +28,35 @@ const FETCHING_FAILED = () => {
   };
 };
 
-export const FETCH_TRENDING_PHOTOS = (page) => {
+export const FETCH_TRENDING_PHOTOS = (page, fav) => {
+  if (fav == null) {
+    fav = [];
+  }
   let photos=5;
   return dispatch => {
     dispatch(FETCHING_REQUEST());
-    fetchrequest(dispatch, page, photos);
+    fetchrequest(dispatch, page, photos, fav);
   };
 };
 
-fetchrequest = (dispatch, page, photos) => {
-  unsplash.photos
-    .listPhotos(page, photos, "Trending")
+fetchrequest = (dispatch, page, photos, fav) => {
+  unsplash.photos.listPhotos(page, photos, "Trending")
     .then(toJson)
     .then(json => {
-      dispatch(FETCHING_SUCCESS(json, page, photos));
+      let favArr = [];
+      fav.map(i => favArr.push(i.id));
+      let finalJson = json.map(i => {
+        if (favArr.indexOf(i.id) !== -1) {
+          i["favIcon"] = true;
+        } else {
+          i["favIcon"] = false;
+        }
+        return i;
+      });
+      dispatch(FETCHING_SUCCESS(finalJson, page, photos));
     })
     .catch(err => {
-    //   console.log("fetch failed", err);
+      // console.log("fetch failed", err);
       dispatch(FETCHING_FAILED());
     });
 };
